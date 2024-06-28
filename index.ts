@@ -1,9 +1,9 @@
 import inquirer from "inquirer";
 
-async function height(){
-    let validinput:boolean=false;
-    let f:number|null=null;
-    let i:number|null=null;
+async function getHeight(){
+    let validinput=false;
+    let feet:number|null=null;
+    let inches:number|null=null;
 
     while(!validinput){
     let input=await inquirer.prompt([
@@ -18,10 +18,10 @@ async function height(){
         type:"input"
     }
 ])
-const a=Number(input.feet)
-const b=Number(input.inches)
+const f=Number(input.feet)
+const i=Number(input.inches)
 
-if(isNaN(a) || isNaN(b))
+if(isNaN(f) || isNaN(i))
     {
     
         console.log("||||||||||\n||||||||||")
@@ -30,33 +30,27 @@ if(isNaN(a) || isNaN(b))
 
 else{
     validinput=true
-    f=a;
-    i=b
+    feet=f;
+    inches=i
     }
 }
-
-   {
-    console.log("||||||||||\n||||||||||")
-    console.log("Your height is\n"+f+"ft "+i+"inch")
-   }
+   return{feet,inches};
 }
 
-// height();
-
-async function weight(){
-    let validinput:boolean=false;
-    let num:number|null=null;
+async function getWeight() {
+    let validinput=false;
+    let weight:number|null=null;
 while(!validinput){
     let input=await inquirer.prompt([
     {
-        name:"Weight",
+        name:"weight",
         message:"Enter your weight ",
         type:"input"
     }
     ])
-const a=Number(input.Weight)
+const w=Number(input.Weight)
 
-if(isNaN(a))
+if(isNaN(w))
     {
         console.log("||||||||||\n||||||||||")
         console.log("Please enter weight in numbers")
@@ -64,13 +58,38 @@ if(isNaN(a))
 else
     {
         validinput=true;
-        num=a;
+        weight=w;
     }
-
 }
+    return{ weight }
+}
+async function main()
+{
+console.log("------------BMI Calculator------------")
+let select=await inquirer.prompt([
+    {
+        name:"name",
+        message:"Enter Your name",
+        type:"input"
+    },
+    {
+        name:"age",
+        message:"Enter Your age",
+        type:"input"
+    }
+])
+
+    console.log("Name: "+select.name+"\nAge: "+select.age)
+    console.log("|||||||||\n||||||||||")
+
+let{feet,inches}=await getHeight()
+
     console.log("||||||||||\n||||||||||")
-    console.log("Your Weight is "+num+"Kg")
+    console.log("Your height is\n"+feet+"ft "+inches+"inch")
 
+let{weight}=await getWeight()
+
+    console.log("||||||||||\n||||||||||")
+    console.log("Your Weight is "+weight+"Kg")
 }
-
-// weight()
+main();

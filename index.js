@@ -1,8 +1,8 @@
 import inquirer from "inquirer";
-async function height() {
+async function getHeight() {
     let validinput = false;
-    let f = null;
-    let i = null;
+    let feet = null;
+    let inches = null;
     while (!validinput) {
         let input = await inquirer.prompt([
             {
@@ -16,46 +16,64 @@ async function height() {
                 type: "input"
             }
         ]);
-        const a = Number(input.feet);
-        const b = Number(input.inches);
-        if (isNaN(a) || isNaN(b)) {
+        const f = Number(input.feet);
+        const i = Number(input.inches);
+        if (isNaN(f) || isNaN(i)) {
             console.log("||||||||||\n||||||||||");
             console.log("Please enter a valid number for feet and inches");
         }
         else {
             validinput = true;
-            f = a;
-            i = b;
+            feet = f;
+            inches = i;
         }
     }
-    {
-        console.log("||||||||||\n||||||||||");
-        console.log("Your height is\n" + f + "ft " + i + "inch");
-    }
+    return { feet, inches };
 }
-height();
-async function weight() {
+async function getWeight() {
     let validinput = false;
-    let num = null;
+    let weight = null;
     while (!validinput) {
         let input = await inquirer.prompt([
             {
-                name: "Weight",
+                name: "weight",
                 message: "Enter your weight ",
                 type: "input"
             }
         ]);
-        const a = Number(input.Weight);
-        if (isNaN(a)) {
+        const w = Number(input.Weight);
+        if (isNaN(w)) {
             console.log("||||||||||\n||||||||||");
             console.log("Please enter weight in numbers");
         }
         else {
             validinput = true;
-            num = a;
+            weight = w;
         }
     }
-    console.log("||||||||||\n||||||||||");
-    console.log("Your Weight is " + num + "Kg");
+    return { weight };
 }
-weight();
+async function main() {
+    console.log("------------BMI Calculator------------");
+    let select = await inquirer.prompt([
+        {
+            name: "name",
+            message: "Enter Your name",
+            type: "input"
+        },
+        {
+            name: "age",
+            message: "Enter Your age",
+            type: "input"
+        }
+    ]);
+    console.log("Name: " + select.name + "\nAge: " + select.age);
+    console.log("|||||||||\n||||||||||");
+    let { feet, inches } = await getHeight();
+    console.log("||||||||||\n||||||||||");
+    console.log("Your height is\n" + feet + "ft " + inches + "inch");
+    let { weight } = await getWeight();
+    console.log("||||||||||\n||||||||||");
+    console.log("Your Weight is " + weight + "Kg");
+}
+main();
